@@ -1,163 +1,93 @@
-**HarvestHub**
+# HarvestHub
 
 **Grow Local. Share More. Waste Less.**
 
-Turning surplus harvests into opportunities to nourish communities.
+HarvestHub is a Java-based application I developed for the 2026 Congressional App Challenge to help connect local farmers with people and organizations who can use their surplus produce. It brings together produce listings, freshness analysis, recipient matching, and delivery planning to make food redistribution more efficient and accessible.
 
-HarvestHub is a Java-based food rescue application designed to connect local farmers with individuals and organizations who can put surplus produce to good use. By combining smart recipient matching, produce freshness analysis, urgency scoring, and delivery route optimization, HarvestHub aims to make food redistribution easier, faster, and more accessible.
+## Why I Built HarvestHub
 
-Created independently for the **2026 Congressional App Challenge**, HarvestHub explores how technology can help reduce food waste while addressing food insecurity, one harvest at a time!
+I live in Waller, Texas, a community surrounded by farms and agricultural activity. Despite this, food insecurity remains a challenge for many local families.
 
----
+I've volunteered with the Waller ISD School Market, which partners with the Houston Food Bank to distribute groceries to families in our community. Being involved in these distributions helped me understand how important food access is and inspired me to think about ways technology could support these efforts.
 
-**The Story Behind HarvestHub**
+I started wondering how farmers with extra produce could connect more easily with people who could use it. That question eventually became HarvestHub.
 
-Growing up in Waller, Texas, I've always been surrounded by farmland and agriculture. Yet even in a community where food is grown, many families face food insecurity.
+## What HarvestHub Does
 
-Through volunteering with the Waller ISD School Market, operated in partnership with the Houston Food Bank, I've seen how much of a difference food distribution programs make for local families.
+**HarvestScan**
 
-That experience inspired a question:
+HarvestScan allows users to upload an image of their produce and receive a visual assessment of potential spoilage risk. I developed an image-processing approach that analyzes pixel-level characteristics to identify possible freshness concerns.
 
-*What if we could make it easier for farmers to share surplus produce with the people who need it?*
+**Harvest Helper**
 
-That's how HarvestHub began.
+Harvest Helper helps farmers determine how urgently their produce should be redistributed. It considers harvest information, storage conditions, current weather, and optional HarvestScan results to calculate an urgency score from 0 to 100 and recommend a pickup window.
 
-My goal was to build something that could bridge the gap between agricultural surplus and community needs, using technology to make food rescue more efficient and accessible.
+**Smart Match**
 
----
-
-**Features**
-
-**HarvestScan — Produce Freshness Analysis**
-
-Upload an image of produce to receive a visual assessment of potential spoilage risk.
-
-- Analyzes visible produce characteristics using image-processing techniques
-- Calculates pixel-based indicators to estimate visual risk
-- Provides an additional signal for determining redistribution urgency
-
-**Harvest Helper — Smart Urgency Scoring**
-
-Not every harvest has the same amount of time before it needs to be redistributed!
-
-Harvest Helper calculates an urgency score from 0–100 using factors such as:
-
-- Produce and harvest information
-- Storage conditions
-- Current weather
-- Optional HarvestScan results
-
-It then recommends a pickup window to help prioritize time-sensitive produce.
-
-**Smart Match — Finding the Right Recipient**
-
-HarvestHub doesn't simply recommend the closest recipient. It considers whether that recipient is actually a good fit for the available harvest.
-
-Its weighted matching algorithm evaluates:
+Smart Match recommends recipients based on more than just proximity. I designed a weighted scoring algorithm that considers five factors:
 
 | Factor | Weight |
-|---|---:|
+|---|---|
 | Distance | 25% |
 | Quantity compatibility | 25% |
 | Pickup timing | 20% |
 | Crop compatibility | 15% |
 | Donation compatibility | 15% |
 
-This approach helps balance logistical efficiency with the needs and capabilities of potential recipients.
+The goal is to identify recipients who are not only nearby but also capable of accepting the available produce.
 
-**Route Optimization — Making Every Trip Count**
+**Route Optimization**
 
-Once recipients are identified, HarvestHub helps plan an efficient delivery route.
+HarvestHub also helps farmers plan deliveries to multiple recipients. I implemented a nearest-neighbor algorithm that calculates geographic distances, selects the closest unvisited destination, and continues until all stops have been included.
 
-Using a nearest-neighbor heuristic, the application:
+The application also displays the delivery route on a map.
 
-1. Starts at the farmer's location.
-2. Identifies the nearest unvisited recipient.
-3. Updates the current location after each stop.
-4. Repeats until the route is complete.
-5. Displays the route on a map.
+**Marketplace and Farm Management**
 
-This provides a practical way to organize multiple deliveries without evaluating every possible route combination.
-
-**Produce Marketplace**
-
-A place to connect surplus produce with interested recipients.
-
-- Browse available harvest listings
-- List produce for donation or sale
-- Reserve available produce
-- Manage listings through My Farm
+Farmers can create listings for surplus produce, offer items for donation or sale, and manage their available harvests. Recipients can browse listings and reserve produce.
 
 **Impact Dashboard**
 
-HarvestHub also includes an impact dashboard designed to help users visualize their food rescue activity and contributions.
+The impact dashboard helps users view their food rescue activity and understand their contributions to reducing food waste.
 
----
+## How I Built It
 
-**Built With**
+I developed HarvestHub entirely in Java, writing more than 5,000 lines of code over several months.
 
-- Java — Application development and core logic
-- Computer vision techniques — Pixel-based produce image analysis
-- Weighted scoring algorithms — Recipient matching and harvest urgency
-- Geographic distance calculations — Delivery route planning
-- Nearest-neighbor heuristic — Efficient multi-stop routing
+The project involved implementing image-processing techniques, designing mathematical scoring systems, working with geographic distance calculations, and connecting multiple features into one application.
 
-HarvestHub contains 5,000+ lines of Java code, independently written, tested, and refined over several months.
+Two of the most challenging parts were Smart Match and route optimization.
 
----
+When I first worked on Smart Match, I focused too heavily on distance. Through testing different scenarios, I realized that the nearest recipient might only be able to accept a small portion of a harvest, while another recipient farther away could take much more. I adjusted the algorithm to consider quantity, timing, and compatibility alongside distance.
 
-**Challenges & Lessons Learned**
+For route optimization, I researched approaches to the Traveling Salesperson Problem, including Google's OR-Tools documentation. Rather than checking every possible delivery order, I implemented my own nearest-neighbor heuristic in Java.
 
-Building HarvestHub meant solving problems that went far beyond writing code.
+Both challenges taught me how important it is to question my initial assumptions, research possible solutions, and keep testing until the results make sense.
 
-One challenge was designing Smart Match. My initial approach focused too heavily on distance, but I realized that the nearest recipient might not be able to accept most of a harvest. After exploring different scenarios and learning from people involved in local food distribution, I developed a weighted system that considers several factors together.
+## Future Plans
 
-Route optimization presented another challenge. With just ten destinations, there are 3,628,800 possible delivery orders! Researching routing algorithms led me to implement a nearest-neighbor approach that offers a practical solution without checking every possible route.
+There are several improvements I'd like to explore as I continue developing HarvestHub:
 
-Through this project, I learned that good technology isn't just about making algorithms work. It's about making them work for people.
+- Improve HarvestScan using a trained machine learning model and a larger produce image dataset.
+- Refine Smart Match using feedback from farmers and recipients.
+- Add traffic conditions, delivery time windows, and vehicle capacity to route planning.
+- Test HarvestHub with local farmers and food distribution organizations.
+- Explore ways to expand the application beyond Waller.
 
----
+## About Me
 
-**What's Next?**
+Hi! I'm Fatimah Shahid, a student at Waller High School in Waller, Texas.
 
-HarvestHub is a starting point, and I'm excited about where it could go!
+I created HarvestHub independently for the 2026 Congressional App Challenge. I designed and programmed the application, developed and tested its algorithms, created the presentation materials, and recorded the demonstration video myself.
 
-Some future improvements I'd love to explore include:
+This project combines two things I care deeply about: computer science and community service. Building HarvestHub has challenged me to become a better programmer, but it has also encouraged me to become more involved in my community and think more seriously about how technology can address everyday problems.
 
-- Training a machine learning model for more advanced produce freshness detection
-- Refining Smart Match using real-world recipient feedback
-- Incorporating traffic conditions, delivery time windows, and vehicle capacity into route planning
-- Testing the application with local farmers and community organizations
-- Expanding food rescue connections beyond Waller
+I'm excited to continue learning and improving HarvestHub!
 
----
+## Acknowledgments
 
-**Meet the Developer**
+Thank you to the teachers, students, and community volunteers involved in the Waller ISD School Market and its partnership with the Houston Food Bank. Your work supporting local families has been a major inspiration for this project.
 
-Hi! I'm Fatimah Shahid, a student at Waller High School in Waller, Texas!
-
-I developed HarvestHub independently as my submission to the 2026 Congressional App Challenge.
-
-From brainstorming the initial concept to writing the Java code, building the algorithms, testing features, creating presentation slides, and recording the demonstration video, this project has been a labor of love over several months.
-
-As someone passionate about computer science, innovation, and community service, I wanted to create something that combined my technical interests with a cause close to home.
-
-HarvestHub has taught me so much about programming, persistence, and the importance of listening to the communities we hope to serve.
-
-I'm excited to keep learning, building, and finding new ways to use technology for good!
-
----
-
-**A Little Thank You**
-
-Thank you to the teachers, student volunteers, and community members involved in the Waller ISD School Market and Houston Food Bank partnership. Your dedication to serving local families continues to inspire me.
-
-And thank you for taking the time to explore HarvestHub!
-
----
+Thank you for checking out HarvestHub!
 
 **Grow Local. Share More. Waste Less.**
-
-*Because good food deserves to be shared, not wasted.*
-
-Made in Waller, Texas.
